@@ -1,0 +1,231 @@
+micronaut:
+  security:
+    enabled: true
+    ldap:
+      default:
+        enabled: true
+        context:
+          server: "ldap://ldap.forumsys.com:389"
+          managerDn: "cn=read-only-admin,dc=example,dc=com"
+          managerPassword: "password"
+        search:
+          base: "dc=example,dc=com"
+        groups:
+          enabled: true
+          base: "dc=example,dc=com"
+    oauth2:
+      enabled: true
+      clients:
+        oidc:
+          client-id: "<client-id>"
+          client-secret: "<client-secret>"
+          openid:
+            issuer: "<issuer-url>"
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: pleasechangeme
+
+  server:
+    csp:
+      directives:
+        default-src: "'self'"
+        script-src: "'self' 'unsafe-inline' 'unsafe-eval' http://localhost:8080"
+        style-src: "'self' 'unsafe-inline'"
+        img-src: "'self' data:"
+        connect-src: "'self' http://localhost:8080"
+        font-src: "'self'"
+        frame-src: "'self'"
+        object-src: "'none'"
+        manifest-src: "'self'"
+        upgrade-insecure-requests: true
+
+akhq:
+  server:
+    base-path: "/ui"
+    access-log:
+      enabled: true
+      name: org.akhq.log.access
+      format: "[Date: {}] [Duration: {} ms] [Url: {} {}] [Status: {}] [Ip: {}] [User: {}]"
+    customHttpResponseHeaders:
+      - name: "Content-Security-Policy"
+        value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:8080; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8080; font-src 'self'; frame-src 'self'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests"
+
+  connections:
+    local:
+      properties:
+        bootstrap.servers: "localhost:9092"
+      schema-registry:
+        url: "http://schema-registry:8085"
+        type: "confluent"
+        basic-auth-username: basic-auth-user
+        basic-auth-password: basic-auth-pass
+      connect:
+        - name: connect-1
+          url: "http://connect:8083"
+          basic-auth-username: basic-auth-user
+          basic-auth-password: basic-auth-pass
+        - name: connect-2
+          url: "http://connect:8084"
+          basic-auth-username: basic-auth-user
+          basic-auth-password: basic-auth-pass
+
+  pagination:
+    page-size: 25
+    threads: 16
+
+  avro-serializer:
+    json.serialization.inclusions:
+      - NON_NULL
+
+  topic:
+    retention: 172800000
+    partition: 3
+    replication: 3
+    internal-regexps:
+      - "^_.*$"
+      - "^.*_schemas$"
+      - "^.*connect-config$"
+      - "^.*connect-offsets$1"
+      - "^.*connect-status$"
+    stream-regexps:
+      - "^.*-changelog$"
+      - "^.*-repartition$"
+      - "^.*-rekey$"
+
+  topic-data:
+    size: 50
+    poll-timeout: 1000
+    kafka-max-message-length: 1000000
+
+  ui-options:
+    topic:
+      default-view: ALL
+      skip-consumer-groups: false
+      skip-last-record: true
+      show-all-consumer-groups: true
+    topic-data:
+      sort: NEWEST
+
+  security:
+    roles:
+      node-read:
+        - resources: ["NODE"]
+          actions: ["READ", "READ_CONFIG"]
+      node-admin:
+        - resources: ["NODE"]
+          actions: ["READ", "READ_CONFIG", "ALTER_CONFIG"]
+      topic-read:
+        - resources: ["TOPIC", "TOPIC_DATA"]
+          actions: ["READ"]
+        - resources: ["TOPIC"]
+          actions: ["READ_CONFIG"]
+      topic-admin:
+        - resources: ["TOPIC", "TOPIC_DATA"]
+          actions: ["READ", "CREATE", "DELETE"]
+        - resources: ["TOPIC"]
+          actions: ["UPDATE", "READ_CONFIG", "ALTER_CONFIG"]
+      connect-rw:
+        - resources: ["CONNECTOR"]
+          actions: ["READ", "CREATE", "UPDATE_STATE"]
+      connect-admin:
+        - resources: ["CONNECTOR"]
+          actions: ["READ", "CREATE", "UPDATE_STATE", "DELETE"]
+      registry-read:
+        - resources: ["SCHEMA"]
+          actions: ["READ"]
+      registry-admin:
+        - resources: ["SCHEMA"]
+          actions: ["READ", "CREATE", "UPDATE", "DELETE", "DELETE_VERSION"]
+      group-read:
+        - resources: ["CONSUMER_GROUP"]
+          actions: ["READ"]
+      connect-cluster-read:
+        - resources: ["CONNECT_CLUSTER"]
+          actions: ["READ"]
+      ksqldb-admin:
+        - resources: ["KSQLDB"]
+          actions: ["READ", "EXECUTE"]
+
+    default-group: admin
+    groups:
+      admin:
+        - role: node-admin
+        - role: topic-admin
+        - role: connect-admin
+        - role: registry-admin
+        - role: group-read
+        - role: connect-cluster-read
+        - role: ksqldb-admin
+      topic-reader:
+        - role: topic-read
+        - role: registry-read
+
+    basic-auth:
+      - username: user
+        password: pass
+        groups:
+          - admin
+
+    ldap:
+      default-group: topic-reader
+      groups:
+        - name: group-ldap-1
+          groups:
+            - topic-reader
+        - name: group-ldap-2
+          groups:
+            - admin
+      users:
+        - username: riemann
+          groups:
+            - topic-reader
+        - username: einstein
+          groups:
+            - admin
+
+    oidc:
+      enabled: true
+      providers:
+        oidc:
+          label: "Login with OIDC"
+          username-field: preferred_username
+          groups-field: roles
+          default-group: topic-reader
+          groups:
+            - name: oidc-admin-group
+              groups:
+                - admin
+          users:
+            - username: einstein
+              groups:
+                - admin
+
+    header-auth:
+      user-header: x-akhq-user
+      groups-header: x-akhq-group
+      groups-header-separator: ","
+      ip-patterns: [127.0.0.*]
+      default-group: topic-reader
+      groups:
+        - name: header-admin-group
+          groups:
+            - admin
+      users:
+        - username: header-user
+          groups:
+            - topic-reader
+        - username: header-admin
+          groups:
+            - admin
+
+    data-masking:
+      filters:
+        - description: "Masks value for secret-key fields"
+          search-regex: '"(secret-key)":".*"'
+          replacement: '"$1":"xxxx"'
+        - description: "Masks last digits of phone numbers"
+          search-regex: '"([\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?)[0-9]{4,6}"'
+          replacement: '"$1xxxx"'
