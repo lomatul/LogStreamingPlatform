@@ -11,7 +11,7 @@ import java.util.Properties;
 public class KafkaToInfluxDB {
 
     public static void main(String[] args) {
-        // Kafka Streams configuration
+
         Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-to-influxdb");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"); // Kafka broker URL
@@ -20,24 +20,22 @@ public class KafkaToInfluxDB {
 
         StreamsBuilder builder = new StreamsBuilder();
 
-        // Read from your Kafka topic (replace "your-kafka-topic" with your actual topic name)
+
         KStream<String, String> stream = builder.stream("logs_topic");
 
-        // Process and save to InfluxDB
+
         stream.foreach((key, value) -> {
-            // Process and write each message (log) to InfluxDB
-            saveToInfluxDB(value); // value contains the log data
+
+            saveToInfluxDB(value);
         });
 
         KafkaStreams streams = new KafkaStreams(builder.build(), props);
         streams.start();
 
-        // Add shutdown hook to close the streams on exit
         Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
     }
 
     private static void saveToInfluxDB(String logMessage) {
-        // Use the InfluxDBService to process the log and write it to InfluxDB bucket
         InfluxDBService.writeLogToInfluxDB(logMessage);
     }
 }

@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa39470e-4d38-4a96-906c-d987935b3086" name="Changes" comment="" />
+    <list default="true" id="aa39470e-4d38-4a96-906c-d987935b3086" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/InfluxDBService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/InfluxDBService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/KafkaToInfluxDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/KafkaToInfluxDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LogGenerator/logs.csv" beforeDir="false" afterPath="$PROJECT_DIR$/../LogGenerator/logs.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LogGenerator/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LogGenerator/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LogGenerator/src/main/java/org/example/LogGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LogGenerator/src/main/java/org/example/LogGenerator.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,8 +25,11 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -30,13 +41,20 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Application.KafkaToInfluxDB.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;G:/Desktop/LogStreamingPlatform/KafkaStreamInfluxDB&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -59,6 +77,15 @@
       <workItem from="1725949908451" duration="1160000" />
       <workItem from="1725952310887" duration="8837000" />
       <workItem from="1726030233050" duration="2407000" />
+      <workItem from="1726034054756" duration="6276000" />
+      <workItem from="1726116484269" duration="11972000" />
+      <workItem from="1726376315873" duration="6755000" />
+      <workItem from="1726392716112" duration="2526000" />
+      <workItem from="1726396491193" duration="1378000" />
+      <workItem from="1726497392202" duration="36000" />
+      <workItem from="1726497826219" duration="2411000" />
+      <workItem from="1726548910710" duration="1786000" />
+      <workItem from="1726529305182" duration="5188000" />
     </task>
     <servers />
   </component>
