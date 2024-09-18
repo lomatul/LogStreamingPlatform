@@ -42,8 +42,8 @@ public class LogGenerator {
                  Log kafkaLog = generateCurrentMonthLog();
                  sendToKafka(kafkaLog);
 
-                Log mysqlLog = generatePreviousMonthLog();
-                writeToCsv(mysqlLog, csvWriter);
+//                Log mysqlLog = generatePreviousMonthLog();
+//                writeToCsv(mysqlLog, csvWriter);
 
                 TimeUnit.MILLISECONDS.sleep(1);
             }
@@ -75,35 +75,44 @@ public class LogGenerator {
         return generateLogWithMonthOffset(-1);
     }
 
+    private static Calendar calendar = null;
+    private static int initialMonth = -1;
+    private static int maxDaysInInitialMonth = -1;
+
     private static Log generateLogWithMonthOffset(int monthOffset) {
+
+        if (calendar == null) {
+            calendar = Calendar.getInstance();
+            calendar.add(Calendar.MONTH, monthOffset);
+            initialMonth = calendar.get(Calendar.MONTH);
+            maxDaysInInitialMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+        }
+        calendar.add(Calendar.SECOND, 1000);
+
+        if (calendar.get(Calendar.MONTH) != initialMonth) {
+
+            calendar.set(Calendar.DAY_OF_MONTH, maxDaysInInitialMonth);
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+            calendar.set(Calendar.MILLISECOND, 0);
+        }
+
+        return generateLogWithTime(calendar);
+
+
+    }
+
+    private static Log generateLogWithTime(Calendar calendar) {
         Random random = new Random();
         String sourceIp = SOURCE_IPS[random.nextInt(SOURCE_IPS.length)];
 
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, monthOffset);
-
-
-        int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int randomDay = random.nextInt(maxDay) + 1;
-        calendar.set(Calendar.DAY_OF_MONTH, randomDay);
-
-
-        int randomHour = random.nextInt(24);
-        int randomMinute = random.nextInt(60);
-        int randomSecond = random.nextInt(60);
-        int randomMillisecond = random.nextInt(900) + 100;
-
-
-
-        calendar.set(Calendar.HOUR_OF_DAY, randomHour);
-        calendar.set(Calendar.MINUTE, randomMinute);
-        calendar.set(Calendar.SECOND, randomSecond);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-
         Timestamp initialTime = new Timestamp(calendar.getTimeInMillis());
-
 
 
         String apiEndpoint = API_ENDPOINTS[random.nextInt(API_ENDPOINTS.length)];

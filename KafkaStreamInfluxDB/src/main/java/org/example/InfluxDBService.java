@@ -44,7 +44,7 @@ public class InfluxDBService {
                 .addTag("api_endpoint", apiEndpoint)
                 .addField("status_code", Integer.parseInt(statusCode))
                 .addField("response_time",Integer.parseInt(responseTime))
-                .time(Instant.now(), WritePrecision.MS);
+                .time(timestamp, WritePrecision.S);
 
 
         try (WriteApi writeApi = influxDBClient.getWriteApi()) {
