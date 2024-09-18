@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 public class InfluxDBService {
 
     private static final String TOKEN = "Xt2SdfMNcIoV6qfudNjiHZZBKuKG9J2R68Cm6snlNAkTAFSgwiraAqTGD_ya8N1nOBzoBA2jyRRrXqsVZQ7JBA==";
-    private static final String BUCKET = "logs_data";
+    private static final String BUCKET = "logs_data2";
     private static final String ORG = "fddd887d19c7b064";
     private static final String INFLUXDB_URL = "http://localhost:8086";
 

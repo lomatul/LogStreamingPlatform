@@ -37,7 +37,7 @@ public class LogGenerator {
         try (FileWriter csvWriter = new FileWriter("logs.csv")) {
 
 
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 10000000; i++) {
 
                  Log kafkaLog = generateCurrentMonthLog();
                  sendToKafka(kafkaLog);
@@ -92,7 +92,7 @@ public class LogGenerator {
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
         }
-        calendar.add(Calendar.SECOND, 1000);
+        calendar.add(Calendar.SECOND, 2000);
 
         if (calendar.get(Calendar.MONTH) != initialMonth) {
 
