@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aa39470e-4d38-4a96-906c-d987935b3086" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/InfluxDBService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/InfluxDBService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/KafkaToInfluxDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/KafkaToInfluxDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LogGenerator/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LogGenerator/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../LogGenerator/src/main/java/org/example/LogGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LogGenerator/src/main/java/org/example/LogGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LogGenerator/src/main/resources/avro/log.avsc" beforeDir="false" afterPath="$PROJECT_DIR$/../LogGenerator/src/main/resources/avro/log.avsc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +52,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
@@ -57,8 +62,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
+        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
       </set>
     </attachedChunks>
   </component>
@@ -86,6 +91,10 @@
       <workItem from="1726592870835" duration="643000" />
       <workItem from="1726634990722" duration="673000" />
       <workItem from="1726614222354" duration="6068000" />
+      <workItem from="1726930511015" duration="807000" />
+      <workItem from="1726936824263" duration="704000" />
+      <workItem from="1726937544173" duration="164000" />
+      <workItem from="1726937724896" duration="2352000" />
     </task>
     <servers />
   </component>

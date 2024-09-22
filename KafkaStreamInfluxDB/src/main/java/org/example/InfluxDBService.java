@@ -21,37 +21,25 @@ public class InfluxDBService {
 
     private static final InfluxDBClient influxDBClient = InfluxDBClientFactory.create(INFLUXDB_URL, TOKEN.toCharArray());
 
-
-    public static void writeLogToInfluxDB(String logMessage) {
-
-        String[] logParts = logMessage.split(",");
-        String sourceIp = logParts[0];
-        String initialTime = logParts[1];
-        String apiEndpoint = logParts[2];
-        String responseTime = logParts[3];
-        String statusCode= logParts[4];
-
+    public static void writeLogToInfluxDB(String sourceIp, String initialTime, String apiEndpoint, int responseTime, int statusCode) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
 
+        // Parse the initialTime to a LocalDateTime
         LocalDateTime localDateTime = LocalDateTime.parse(initialTime, formatter);
-
         Instant timestamp = localDateTime.toInstant(ZoneOffset.UTC);
 
-
+        // Create a Point for InfluxDB
         Point point = Point.measurement("api_logs")
                 .addTag("source_ip", sourceIp)
-                .addTag("initial_time", initialTime)
+                .addField("initial_time", initialTime)
                 .addTag("api_endpoint", apiEndpoint)
-                .addField("status_code", Integer.parseInt(statusCode))
-                .addField("response_time",Integer.parseInt(responseTime))
+                .addField("status_code", statusCode)
+                .addField("response_time", responseTime)
                 .time(timestamp, WritePrecision.S);
-
 
         try (WriteApi writeApi = influxDBClient.getWriteApi()) {
             writeApi.writePoint(BUCKET, ORG, point);
-
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             System.err.println("Error while writing to InfluxDB: " + e.getMessage());
             e.printStackTrace();
         }

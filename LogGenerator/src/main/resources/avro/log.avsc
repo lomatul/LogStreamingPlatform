@@ -1,12 +1,11 @@
 {
   "type": "record",
   "name": "Log",
-  "namespace": "com.example",
   "fields": [
-    {"name": "sourceApi", "type": "string"},
-    {"name": "initialTime", "type": "string"},
-    {"name": "apiEndpoint", "type": "string"},
-    {"name": "responseTime", "type": "int"},
-    {"name": "statusCode", "type": "int"}
+    {"name": "source_ip", "type": "string"},
+    {"name": "initial_time", "type": "string"},
+    {"name": "api_endpoint", "type": "string"},
+    {"name": "response_time", "type": "int"},
+    {"name": "status_code", "type": "int"}
   ]
 }

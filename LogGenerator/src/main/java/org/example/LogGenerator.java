@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
@@ -9,6 +10,10 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import io.confluent.kafka.serializers.KafkaAvroSerializer;
+import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -27,9 +32,22 @@ public class LogGenerator {
 
     private static final int[] STATUS_CODES = {200, 301, 302, 401, 403, 404, 410, 500, 502, 503};
 
-    private static Producer<String, String> producer;
-    private static Connection connection;
+    private static Producer<String, GenericRecord> producer;
 
+    private static Schema loadSchema() {
+        Schema schema = null;
+        try {
+            File schemaFile = new File("src/main/resources/avro/log.avsc");
+            schema = new Schema.Parser().parse(schemaFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return schema;
+    }
+
+
+    private static Connection connection;
+    public static Schema schema = loadSchema();
     public static void main(String[] args) {
 
          initializeKafkaProducer();
@@ -37,7 +55,7 @@ public class LogGenerator {
         try (FileWriter csvWriter = new FileWriter("logs.csv")) {
 
 
-            for (int i = 0; i < 10000000; i++) {
+            for (int i = 0; i < 1000; i++) {
 
                  Log kafkaLog = generateCurrentMonthLog();
                  sendToKafka(kafkaLog);
@@ -49,7 +67,7 @@ public class LogGenerator {
             }
 
             System.out.println("Log generation completed. Starting bulk insert into MySQL...");
-            bulkInsertToMySQL();
+//            bulkInsertToMySQL();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -62,7 +80,8 @@ public class LogGenerator {
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:9092");
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("value.serializer", KafkaAvroSerializer.class.getName());
+        props.put("schema.registry.url", "http://localhost:8081"); // Schema Registry URL
 
         producer = new KafkaProducer<>(props);
     }
@@ -134,19 +153,22 @@ public class LogGenerator {
 
     private static void sendToKafka(Log log) {
 
-        String logMessage = String.format("%s,%s,%s,%d,%d",log.sourceIp,log.initialTime,log.apiEndpoint,log.responseTime,log.statusCode);
-//        String logMessage = String.format(
-//                "{\"source_ip\":\"%s\", \"initial_time\":\"%s\", \"api_endpoint\":\"%s\", \"response_time\":%d, \"status_code\":%d}",
-//                log.sourceIp, log.initialTime.toString(), log.apiEndpoint, log.responseTime, log.statusCode
-//        );
 
-        ProducerRecord<String, String> record = new ProducerRecord<>("logs_topic","log", logMessage);
 
-        producer.send(record, (RecordMetadata metadata, Exception e) -> {
+        GenericRecord record = new GenericData.Record(schema);
+
+        record.put("source_ip", log.sourceIp);
+        record.put("initial_time", log.initialTime.toString());
+        record.put("api_endpoint", log.apiEndpoint);
+        record.put("response_time", log.responseTime);
+        record.put("status_code", log.statusCode);
+
+        ProducerRecord<String, GenericRecord> avroRecord = new ProducerRecord<>("logs_topic", "log", record);
+        producer.send(avroRecord, (metadata, e) -> {
             if (e != null) {
-                e.printStackTrace();
+                System.err.println("Error sending record: " + e.getMessage());
             } else {
-                System.out.println("Sent: " + logMessage);
+                System.out.println("Sent: " + record);
             }
         });
     }
