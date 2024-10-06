@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "name": "LogEntry",
+  "fields": [
+    {"name": "source_ip", "type": "string"},
+    {"name": "initial_time", "type": "string"},
+    {"name": "api_endpoint", "type": "string"},
+    {"name": "response_time", "type": "int"},
+    {"name": "status_code", "type": "int"}
+  ]
+}

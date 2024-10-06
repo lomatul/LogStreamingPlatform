@@ -1,0 +1,95 @@
+package com.example.avro; // Change this to your desired package
+
+import org.apache.avro.specific.SpecificRecordBase;
+import org.apache.avro.specific.SpecificData;
+import org.apache.avro.Schema;
+import org.apache.avro.io.Encoder;
+import org.apache.avro.io.Decoder;
+import org.apache.avro.io.EncoderFactory;
+import org.apache.avro.io.DecoderFactory;
+import org.apache.avro.specific.SpecificRecord;
+
+import java.io.IOException;
+import java.util.Objects;
+
+public class LogEntry extends SpecificRecordBase implements SpecificRecord {
+    public static final Schema SCHEMA$ = new Schema.Parser().parse(
+        "{\"type\":\"record\",\"name\":\"LogEntry\",\"fields\":[{\"name\":\"source_ip\",\"type\":\"string\"},{\"name\":\"initial_time\",\"type\":\"string\"},{\"name\":\"api_endpoint\",\"type\":\"string\"},{\"name\":\"response_time\",\"type\":\"int\"},{\"name\":\"status_code\",\"type\":\"int\"}]}"
+    );
+
+    private CharSequence source_ip;
+    private CharSequence initial_time;
+    private CharSequence api_endpoint;
+    private int response_time;
+    private int status_code;
+
+    public Schema getSchema() {
+        return SCHEMA$;
+    }
+
+    public CharSequence getSourceIp() {
+        return source_ip;
+    }
+
+    public void setSourceIp(CharSequence source_ip) {
+        this.source_ip = source_ip;
+    }
+
+    public CharSequence getInitialTime() {
+        return initial_time;
+    }
+
+    public void setInitialTime(CharSequence initial_time) {
+        this.initial_time = initial_time;
+    }
+
+    public CharSequence getApiEndpoint() {
+        return api_endpoint;
+    }
+
+    public void setApiEndpoint(CharSequence api_endpoint) {
+        this.api_endpoint = api_endpoint;
+    }
+
+    public int getResponseTime() {
+        return response_time;
+    }
+
+    public void setResponseTime(int response_time) {
+        this.response_time = response_time;
+    }
+
+    public int getStatusCode() {
+        return status_code;
+    }
+
+    public void setStatusCode(int status_code) {
+        this.status_code = status_code;
+    }
+
+    @Override
+    public Object get(int field) {
+        switch (field) {
+            case 0: return source_ip;
+            case 1: return initial_time;
+            case 2: return api_endpoint;
+            case 3: return response_time;
+            case 4: return status_code;
+            default: throw new IndexOutOfBoundsException(String.valueOf(field));
+        }
+    }
+
+    @Override
+    public void put(int field, Object value) {
+        switch (field) {
+            case 0: source_ip = (CharSequence) value; break;
+            case 1: initial_time = (CharSequence) value; break;
+            case 2: api_endpoint = (CharSequence) value; break;
+            case 3: response_time = (Integer) value; break;
+            case 4: status_code = (Integer) value; break;
+            default: throw new IndexOutOfBoundsException(String.valueOf(field));
+        }
+    }
+
+    // Override toString, equals, and hashCode methods if needed
+}
